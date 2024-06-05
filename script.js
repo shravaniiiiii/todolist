@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const inputBox = document.getElementById('input-box');
+    const taskTitleInput = document.getElementById('task-title');
+    const taskTextInput = document.getElementById('task-text');
     const dateInput = document.getElementById('date-input');
     const addBtn = document.getElementById('add-btn');
     const todoList = document.getElementById('todo-list');
@@ -9,21 +10,23 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Add new todo
     addBtn.addEventListener('click', function() {
-        const todoText = inputBox.value.trim();
-        const todoDate = dateInput.value;
+        const taskTitle = taskTitleInput.value.trim();
+        const taskText = taskTextInput.value.trim();
+        const taskDate = dateInput.value;
 
-        if (todoText !== '' && todoDate !== '') { // Ensure both text and date are entered
+        if (taskTitle !== '' && taskDate !== '') { // Ensure title and date are entered
             const now = new Date();
             const todo = {
-                text: todoText,
-                date: todoDate,
+                title: taskTitle,
+                text: taskText,
+                date: taskDate,
                 time: now.toLocaleTimeString(),
                 completed: false
             };
             addTodoItem(todo);
             saveTodoItem(todo);
-            setReminder(todo); // Set reminder for this todo
-            inputBox.value = '';
+            taskTitleInput.value = '';
+            taskTextInput.value = '';
             dateInput.value = '';
         }
     });
@@ -34,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const details = document.createElement('div');
         details.classList.add('todo-details');
-        details.innerHTML = `${todo.text} - ${todo.date} ${todo.time}`;
+        details.innerHTML = `<h3>${todo.title}</h3><p>${todo.text}</p><p>${todo.date} ${todo.time}</p>`;
 
         const buttons = document.createElement('div');
         buttons.classList.add('buttons');
@@ -48,6 +51,18 @@ document.addEventListener('DOMContentLoaded', function() {
             updateTodoItem(todo);
         };
 
+        const editBtn = document.createElement('button');
+        editBtn.textContent = 'Edit';
+        editBtn.classList.add('edit-btn');
+        editBtn.onclick = function() {
+            const newTitle = prompt('Enter new title:', todo.title);
+            if (newTitle !== null) {
+                todo.title = newTitle;
+                updateTodoItem(todo);
+                details.innerHTML = `<h3>${todo.title}</h3><p>${todo.text}</p><p>${todo.date} ${todo.time}</p>`;
+            }
+        };
+
         const deleteBtn = document.createElement('button');
         deleteBtn.textContent = 'Delete';
         deleteBtn.classList.add('delete-btn');
@@ -57,6 +72,7 @@ document.addEventListener('DOMContentLoaded', function() {
         };
 
         buttons.appendChild(completeBtn);
+        buttons.appendChild(editBtn);
         buttons.appendChild(deleteBtn);
 
         listItem.appendChild(details);
@@ -75,14 +91,14 @@ document.addEventListener('DOMContentLoaded', function() {
     // Update todo item in local storage
     function updateTodoItem(updatedTodo) {
         let todos = JSON.parse(localStorage.getItem('todos')) || [];
-        todos = todos.map(todo => (todo.text === updatedTodo.text && todo.date === updatedTodo.date && todo.time === updatedTodo.time) ? updatedTodo : todo);
+        todos = todos.map(todo => (todo.title === updatedTodo.title && todo.date === updatedTodo.date && todo.time === updatedTodo.time) ? updatedTodo : todo);
         localStorage.setItem('todos', JSON.stringify(todos));
     }
 
     // Delete todo item from local storage
     function deleteTodoItem(deletedTodo) {
         let todos = JSON.parse(localStorage.getItem('todos')) || [];
-        todos = todos.filter(todo => !(todo.text === deletedTodo.text && todo.date === deletedTodo.date && todo.time === deletedTodo.time));
+        todos = todos.filter(todo => !(todo.title === deletedTodo.title && todo.date === deletedTodo.date && todo.time === deletedTodo.time));
         localStorage.setItem('todos', JSON.stringify(todos));
     }
 
@@ -91,32 +107,6 @@ document.addEventListener('DOMContentLoaded', function() {
         let todos = JSON.parse(localStorage.getItem('todos')) || [];
         todos.forEach(todo => addTodoItem(todo));
     }
-
-    // Function to set a reminder for a to-do item
-    function setReminder(todo) {
-        const reminderTime = new Date(todo.date + ' ' + todo.time);
-        const currentTime = new Date();
-
-        if (reminderTime > currentTime) {
-            const timeUntilReminder = reminderTime - currentTime;
-            setTimeout(() => {
-                showReminderNotification(todo.text);
-            }, timeUntilReminder);
-        }
-    }
-
-    // Function to show a reminder notification
-    function showReminderNotification(todoText) {
-        if ('Notification' in window) {
-            Notification.requestPermission().then(permission => {
-                if (permission === 'granted') {
-                    new Notification('Reminder', {
-                        body: 'Don\'t forget to: ' + todoText,
-                        icon: 'icon.png'
-                    });
-                }
-            });
-        }
-    }
 });
+
 
