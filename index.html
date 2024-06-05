@@ -9,14 +9,29 @@
 <body>
     <div class="container">
         <div class="todo-app">
-            <h2>To Do List <img src="icon.png" alt="Icon" style="width: 24px; height: 24px;"></h2>
-            <div class="row">
-                <input type="text" id="input-box" placeholder="Add your text">
-                <button id="add-btn">Add</button>
-            </div>
-            <ul id="todo-list"></ul>
+            <div class="nav-bar">
+                <h2>To Do List <img src="icon.png" alt="Icon" style="width: 24px; height: 24px;"></h2>
+                        <div class="input-section">
+                            <label for="user-name">Name:</label>
+                            <input type="text" id="user-name" placeholder="Enter your name">
+                        </div>
+                        <div class="input-section">
+                            <label for="user-phone">Phone:</label>
+                            <input type="tel" id="user-phone" placeholder="Enter your phone number">
+                        </div>
+                        <div class="input-section">
+                            <label for="input-box">Text:</label>
+                            <input type="text" id="input-box" placeholder="Add your text">
+                        </div>
+                        <div class="input-section">
+                            <label for="date-input">Date:</label>
+                            <input type="date" id="date-input">
+                        </div>
+                        <button id="add-btn">Add</button>
+                        <ul id="todo-list"></ul>
+                    </div>
+                </div>
         </div>
-    </div>
     <script src="script.js"></script>
 </body>
 </html>
