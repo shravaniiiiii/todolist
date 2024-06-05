@@ -12,21 +12,18 @@
             <div class="nav-bar">
                 <h2>To Do List <img src="icon.png" alt="Icon" style="width: 24px; height: 24px;"></h2>
                         <div class="input-section">
-                            <label for="user-name">Name:</label>
-                            <input type="text" id="user-name" placeholder="Enter your name">
+                            <label for="task-title">Task Title:</label>
+                            <input type="text" id="task-title" placeholder="Enter task title">
                         </div>
                         <div class="input-section">
-                            <label for="user-phone">Phone:</label>
-                            <input type="tel" id="user-phone" placeholder="Enter your phone number">
-                        </div>
-                        <div class="input-section">
-                            <label for="input-box">Text:</label>
-                            <input type="text" id="input-box" placeholder="Add your text">
+                            <label for="task-text">Task Creation:</label>
+                            <textarea id="task-text" placeholder="Enter task details"></textarea>
                         </div>
                         <div class="input-section">
                             <label for="date-input">Date:</label>
                             <input type="date" id="date-input">
                         </div>
+                        
                         <button id="add-btn">Add</button>
                         <ul id="todo-list"></ul>
                     </div>
@@ -35,3 +32,4 @@
     <script src="script.js"></script>
 </body>
 </html>
+
