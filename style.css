@@ -6,14 +6,18 @@
 }
 
 .container {
+    display: flex;
     width: 100%;
     min-height: 100vh;
     background: linear-gradient(135deg, #153677, #4e085f);
     padding: 10px;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
 .todo-app {
-    width: 100%;
+    width: 500px;
     max-width: 540px;
     background: #fff;
     margin: 100px auto 20px;
@@ -43,6 +47,22 @@ input[type="text"] {
     background: transparent;
     padding: 10px;
     font-size: 14px;
+}
+.input-section {
+    margin-bottom: 10px;
+}
+
+.input-section label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.input-section input {
+    width: calc(100% - 10px);
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    outline: none;
 }
 
 button {
@@ -90,7 +110,7 @@ li .complete-btn {
 }
 
 li .delete-btn {
-    background: #de6c6c;
+    background: #ff0000;
 }
 
 li .complete-btn {
@@ -107,3 +127,4 @@ li.completed {
     justify-content: space-between;
     width: 100%;
 }
+
