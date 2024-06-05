@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     const inputBox = document.getElementById('input-box');
+    const dateInput = document.getElementById('date-input');
     const addBtn = document.getElementById('add-btn');
     const todoList = document.getElementById('todo-list');
 
@@ -9,18 +10,21 @@ document.addEventListener('DOMContentLoaded', function() {
     // Add new todo
     addBtn.addEventListener('click', function() {
         const todoText = inputBox.value.trim();
+        const todoDate = dateInput.value;
 
-        if (todoText !== '') {
+        if (todoText !== '' && todoDate !== '') { // Ensure both text and date are entered
             const now = new Date();
             const todo = {
                 text: todoText,
-                date: now.toLocaleDateString(),
+                date: todoDate,
                 time: now.toLocaleTimeString(),
                 completed: false
             };
             addTodoItem(todo);
             saveTodoItem(todo);
+            setReminder(todo); // Set reminder for this todo
             inputBox.value = '';
+            dateInput.value = '';
         }
     });
 
@@ -87,4 +91,32 @@ document.addEventListener('DOMContentLoaded', function() {
         let todos = JSON.parse(localStorage.getItem('todos')) || [];
         todos.forEach(todo => addTodoItem(todo));
     }
+
+    // Function to set a reminder for a to-do item
+    function setReminder(todo) {
+        const reminderTime = new Date(todo.date + ' ' + todo.time);
+        const currentTime = new Date();
+
+        if (reminderTime > currentTime) {
+            const timeUntilReminder = reminderTime - currentTime;
+            setTimeout(() => {
+                showReminderNotification(todo.text);
+            }, timeUntilReminder);
+        }
+    }
+
+    // Function to show a reminder notification
+    function showReminderNotification(todoText) {
+        if ('Notification' in window) {
+            Notification.requestPermission().then(permission => {
+                if (permission === 'granted') {
+                    new Notification('Reminder', {
+                        body: 'Don\'t forget to: ' + todoText,
+                        icon: 'icon.png'
+                    });
+                }
+            });
+        }
+    }
 });
+
